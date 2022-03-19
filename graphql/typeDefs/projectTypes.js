@@ -26,7 +26,12 @@ const projectTypeDefs = gql`
 		attentionFlag: Boolean
 		createdAt: Date
 	}
-
+	type Like {
+		id: ID
+		userId: ID
+		likedStatusId: ID
+		createdAt: Date
+	}
 	type Status {
 		id: ID
 		projectOwner: User

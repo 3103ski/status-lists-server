@@ -25,8 +25,13 @@ const statusSchema = new Schema(
 			ref: 'Task',
 		},
 		likes: {
-			type: Schema.Types.ObjectId,
-			ref: 'Like',
+			type: [
+				{
+					type: Schema.Types.ObjectId,
+					ref: 'Like',
+				},
+			],
+			default: [],
 		},
 	},
 	{ timestamps: true }

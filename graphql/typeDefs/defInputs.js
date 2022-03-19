@@ -32,7 +32,6 @@ const inputsTypeDef = gql`
 	}
 
 	input TaskInput {
-		users: [User]
 		title: String
 		notes: String
 		isComplete: Boolean

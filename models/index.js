@@ -1,8 +1,8 @@
-const Like = require('./Like');
-const Project = require('./Project');
-const Status = require('./Status');
-const Task = require('./Task');
-const User = require('./User');
+const Project = require('./Project.js');
+const Like = require('./Like.js');
+const Status = require('./Status.js');
+const Task = require('./Task.js');
+const User = require('./User.js');
 
 module.exports = {
 	Like,

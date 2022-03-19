@@ -68,7 +68,7 @@ exports.get_all_tasks_by_user = async function (userId) {
 	return tasks;
 };
 
-exports.updateTask = async function (taskInput, taskId, userId) {
+exports.update_task = async function (taskInput, taskId, userId) {
 	let task = await _this.get_task(taskId, false);
 	let user = await user_controller.get_user(userId);
 

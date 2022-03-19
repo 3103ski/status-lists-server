@@ -51,4 +51,4 @@ projectSchema
 	.pre('find', Populate('owner'))
 	.pre('findOne', Populate('owner'));
 
-module.exports = model('Like', projectSchema);
+module.exports = model('Project', projectSchema);

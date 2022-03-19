@@ -7,6 +7,19 @@ const queryTypeDef = gql`
 		# Users
 		user(userId: ID): User
 		users: [User]
+
+		# projects
+		project(projectId: ID): Project
+		userProjects: [Project]
+
+		# tasks
+		task(taskId: ID): Task
+		projectTasks(projectId: ID): [Task]
+		userTasks: [Task]
+		tasksCreatedByUser: [Task]
+
+		# statuses
+		status(statusId: ID): Status
 	}
 `;
 
