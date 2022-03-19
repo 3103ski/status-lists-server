@@ -27,6 +27,12 @@ const userTypeDef = gql`
 		pictures: [String]
 		profileBanner: String
 	}
+
+	type Like {
+		userId: ID
+		likedStatusId: ID
+		createdAt: Date
+	}
 `;
 
 module.exports = userTypeDef;
