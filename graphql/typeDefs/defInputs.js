@@ -21,6 +21,27 @@ const inputsTypeDef = gql`
 		avatar: String
 		profileBanner: String
 	}
+
+	# /** •••••••••••••• */
+	# /** PROJECT INPUTS */
+	# /** •••••••••••••• */
+	input ProjectInput {
+		title: String
+		notes: String
+		isArchived: Boolean
+	}
+
+	input TaskInput {
+		users: [User]
+		title: String
+		notes: String
+		isComplete: Boolean
+		attentionFlag: Boolean
+	}
+
+	input StatusInput {
+		text: String
+	}
 `;
 
 module.exports = inputsTypeDef;

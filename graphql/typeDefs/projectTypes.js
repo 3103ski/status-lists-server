@@ -2,7 +2,9 @@ const { gql } = require('apollo-server-express');
 
 const projectTypeDefs = gql`
 	type Project {
+		id: ID
 		owner: User
+		users: [User]
 		title: String
 		notes: String
 		isArchived: Boolean
@@ -12,7 +14,9 @@ const projectTypeDefs = gql`
 	}
 
 	type Task {
+		id: ID
 		projectOwner: User
+		createdBy: User
 		users: [User]
 		title: String
 		notes: String
@@ -24,8 +28,10 @@ const projectTypeDefs = gql`
 	}
 
 	type Status {
+		id: ID
 		projectOwner: User
-		user: User
+		taskCreator: User
+		createdBy: User
 		text: String
 		task: ID
 		likes: [Like]

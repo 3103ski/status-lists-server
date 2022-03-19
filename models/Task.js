@@ -6,6 +6,10 @@ const taskSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
+		createdBy: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+		},
 		users: {
 			type: [
 				{
@@ -52,6 +56,8 @@ taskSchema
 	.pre('findOne', Populate('statuses'))
 	.pre('find', Populate('projectOwner'))
 	.pre('findOne', Populate('projectOwner'))
+	.pre('find', Populate('createdBy'))
+	.pre('findOne', Populate('createdBy'))
 	.pre('find', Populate('users'))
 	.pre('findOne', Populate('users'));
 

@@ -19,10 +19,15 @@ exports.create_user = async function ({ displayName, email, password, firstName,
 };
 
 // --->> GETTERS
-exports.get_user = async function (userId) {
+exports.get_user = async function (userId, populate = true) {
 	if (userId) {
-		const user = await User.findOne({ _id: userId });
-		if (user) return user;
+		let user;
+		if (populate === true) {
+			user = await User.findOne({ _id: userId });
+		} else {
+			user = await User.findById(userId);
+		}
+		return user;
 	}
 	return null;
 };

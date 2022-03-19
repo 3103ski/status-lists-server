@@ -8,7 +8,11 @@ const statusSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
-		user: {
+		taskCreator: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+		},
+		createdBy: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
@@ -33,6 +37,8 @@ statusSchema
 	.pre('findOne', Populate('likes'))
 	.pre('find', Populate('projectOwner'))
 	.pre('findOne', Populate('projectOwner'))
+	.pre('find', Populate('taskCreator'))
+	.pre('findOne', Populate('taskCreator'))
 	.pre('find', Populate('user'))
 	.pre('findOne', Populate('user'));
 

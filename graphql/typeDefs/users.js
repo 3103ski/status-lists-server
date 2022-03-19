@@ -11,6 +11,7 @@ const userTypeDef = gql`
 		info: UserInfo
 		isPublic: Boolean
 		googleId: String
+		projects: [Project]
 		email: String!
 		token: String!
 		createdAt: String!
@@ -29,6 +30,7 @@ const userTypeDef = gql`
 	}
 
 	type Like {
+		id: ID
 		userId: ID
 		likedStatusId: ID
 		createdAt: Date
