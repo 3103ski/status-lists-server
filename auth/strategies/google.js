@@ -17,8 +17,9 @@ module.exports.googleStrategy = passport.use(
 		},
 		async function (_, __, profile, done) {
 			const email = profile.emails[0].value;
-
+			console.log('In the endpoint');
 			return User.findOne({ googleId: profile.id }, async (err, existingUser) => {
+				console.log({ existingUser });
 				if (err) return done(err, false);
 				if (!err && existingUser) return done(null, existingUser);
 
@@ -42,26 +43,37 @@ module.exports.googleStrategy = passport.use(
 				return user.save(async (error) => {
 					if (error) return done(error, null);
 					const avatarUrl = profile._json.picture;
-
+					console.log('made it to check 2');
 					return https
 						.get(avatarUrl, (resp) => {
 							resp.setEncoding('base64');
+							console.log('trying to make avatar', avatarUrl);
 							body = 'data:' + resp.headers['content-type'] + ';base64,';
-
+							console.log('check 2.5');
 							resp.on('data', (data) => {
 								body += data;
 							});
+							console.log('check 3');
+							resp.on('error', (error) => {
+								console.log({ hasErrorToThrow: error });
+								done(error, null);
+							});
 
 							return resp.on('end', async () => {
+								console.log('check 4');
+								console.log({ body });
 								let userWithAvatar = await User.findOne({
 									_id: user._id,
 								});
 
 								if (body && userWithAvatar) {
+									console.log('check 4.5');
 									const uploadRes = await cloudinary.uploader.upload(body, {
-										upload_preset: 'mix_studios',
+										upload_preset: 'status_list_maker',
 										folder: 'avatars',
 									});
+
+									console.log({ madeThisUpload: uploadRes });
 
 									if (uploadRes) {
 										userWithAvatar.info.avatar = uploadRes.public_id;

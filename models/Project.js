@@ -45,10 +45,6 @@ const projectSchema = new Schema(
 	{ timestamps: true }
 );
 
-projectSchema
-	.pre('find', Populate('tasks'))
-	.pre('findOne', Populate('tasks'))
-	.pre('find', Populate('owner'))
-	.pre('findOne', Populate('owner'));
+projectSchema.pre('find', Populate('tasks')).pre('findOne', Populate('tasks'));
 
 module.exports = model('Project', projectSchema);

@@ -8,7 +8,9 @@ module.exports = {
 		},
 		async userProjects(_, __, context) {
 			const isAuthorized = checkAuth(context);
+			console.log('heard 1');
 			if (isAuthorized) {
+				console.log('headed into the get method');
 				return project_controller.get_user_projects(isAuthorized._id);
 			}
 		},

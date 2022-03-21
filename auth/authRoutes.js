@@ -118,7 +118,6 @@ authRouter
 
 async function loginMiddleware(req, res, next) {
 	const { password, newPassword, confirmNewPassword, email, displayName = null, confirmPassword } = req.body;
-	console.log({ displayName, email });
 	let missingFieldsErrors = {};
 	if (email === '') missingFieldsErrors.email = 'You need to enter your login email';
 	if (password === '') missingFieldsErrors.password = 'You need to enter a password';

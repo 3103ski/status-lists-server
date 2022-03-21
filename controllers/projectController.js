@@ -6,7 +6,9 @@ const _this = this;
 exports.create_project = async function (projectInput, userId) {
 	const { title, notes = '' } = projectInput;
 	let user = await user_controller.get_user(userId, false);
-	let newProject = await new Project({ title, notes, projectOwner: userId });
+	let newProject = await new Project({ title, notes, owner: userId, users: [userId] });
+
+	console.log(newProject);
 
 	user.projects = await [...user.projects, newProject._id];
 	return user
@@ -28,16 +30,20 @@ exports.create_project = async function (projectInput, userId) {
 
 exports.get_project = async function (projectId, populate = true) {
 	let project;
+
 	if (populate === true) {
 		project = await Project.findOne({ _id: projectId });
 	} else {
 		project = await Project.findById(projectId);
 	}
+
 	return project;
 };
 
 exports.get_user_projects = async function (userId) {
+	console.log('userId in the user projects function', userId);
 	let projects = await Project.find({ owner: userId });
+	console.log({ projectsResult: projects });
 	return projects;
 };
 
