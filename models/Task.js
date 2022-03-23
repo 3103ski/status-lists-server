@@ -52,14 +52,6 @@ const taskSchema = new Schema(
 	{ timestamps: true }
 );
 
-taskSchema
-	.pre('find', Populate('statuses'))
-	.pre('findOne', Populate('statuses'))
-	.pre('find', Populate('projectOwner'))
-	.pre('findOne', Populate('projectOwner'))
-	.pre('find', Populate('createdBy'))
-	.pre('findOne', Populate('createdBy'))
-	.pre('find', Populate('users'))
-	.pre('findOne', Populate('users'));
+taskSchema.pre('find', Populate('statuses')).pre('findOne', Populate('statuses'));
 
 module.exports = model('Task', taskSchema);

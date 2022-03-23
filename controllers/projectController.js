@@ -41,7 +41,6 @@ exports.get_project = async function (projectId, populate = true) {
 };
 
 exports.get_user_projects = async function (userId) {
-	console.log('userId in the user projects function', userId);
 	let projects = await Project.find({ owner: userId });
 	console.log({ projectsResult: projects });
 	return projects;

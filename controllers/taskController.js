@@ -2,6 +2,7 @@ const { Task } = require('../models');
 
 const user_controller = require('./userController');
 const project_controller = require('./projectController');
+const status_controller = require('./statusController');
 
 const _this = this;
 
@@ -14,15 +15,30 @@ exports.create_task = async function (taskInput, projectId, userId) {
 			let { title, notes = '' } = taskInput;
 
 			let users = (await project.owner) === userId ? [] : [userId];
-			let newTask = await new Task({ title, notes, projectOwner: project.owner, users, createdBy: userId });
+			let newTask = await new Task({
+				title,
+				notes,
+				projectOwner: project.owner,
+				project: projectId,
+				users,
+				createdBy: userId,
+			});
 
-			project.tasks = await [...project.tasks, newTask._id];
+			// add new task to its project
+			project.tasks = await [newTask._id, ...project.tasks];
 			return project
 				.save()
-				.then((updatedProject) => {
+				.then(async () => {
+					// save the new task if it was added to the project successfully
 					return newTask
 						.save()
-						.then((savedTask) => savedTask)
+						.then(async (savedTask) => {
+							await status_controller.create_status({ text: 'Task Created' }, savedTask._id, userId);
+
+							let populated_task = await _this.get_task(savedTask._id);
+
+							return populated_task;
+						})
 						.catch((error) => ({
 							error,
 							msg: 'task_controller >> create_task >>> error saving the new task',

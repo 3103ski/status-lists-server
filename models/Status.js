@@ -37,14 +37,6 @@ const statusSchema = new Schema(
 	{ timestamps: true }
 );
 
-statusSchema
-	.pre('find', Populate('likes'))
-	.pre('findOne', Populate('likes'))
-	.pre('find', Populate('projectOwner'))
-	.pre('findOne', Populate('projectOwner'))
-	.pre('find', Populate('taskCreator'))
-	.pre('findOne', Populate('taskCreator'))
-	.pre('find', Populate('user'))
-	.pre('findOne', Populate('user'));
+statusSchema.pre('find', Populate('likes')).pre('findOne', Populate('likes'));
 
 module.exports = model('Status', statusSchema);

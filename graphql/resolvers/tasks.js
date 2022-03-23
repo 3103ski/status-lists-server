@@ -28,6 +28,7 @@ module.exports = {
 	Mutation: {
 		async newTask(_, { taskInput, projectId }, context) {
 			const isAuthorized = checkAuth(context);
+			console.log('check');
 			if (isAuthorized) {
 				return task_controller.create_task(taskInput, projectId, isAuthorized._id);
 			}

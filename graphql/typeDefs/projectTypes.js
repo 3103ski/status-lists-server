@@ -15,9 +15,9 @@ const projectTypeDefs = gql`
 
 	type Task {
 		id: ID
-		projectOwner: User
-		createdBy: User
-		users: [User]
+		projectOwner: ID
+		users: [ID]
+		createdBy: ID
 		title: String
 		notes: String
 		project: ID
@@ -34,9 +34,9 @@ const projectTypeDefs = gql`
 	}
 	type Status {
 		id: ID
-		projectOwner: User
-		taskCreator: User
-		createdBy: User
+		projectOwner: ID
+		taskCreator: ID
+		createdBy: ID
 		text: String
 		task: ID
 		likes: [Like]

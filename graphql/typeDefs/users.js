@@ -11,7 +11,7 @@ const userTypeDef = gql`
 		info: UserInfo
 		isPublic: Boolean
 		googleId: String
-		projects: [Project]
+		projects: [ID]
 		email: String!
 		token: String!
 		createdAt: String!
