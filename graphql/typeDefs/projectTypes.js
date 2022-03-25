@@ -23,6 +23,7 @@ const projectTypeDefs = gql`
 		project: ID
 		statuses: [Status]
 		isComplete: Boolean
+		archived: Boolean
 		attentionFlag: Boolean
 		createdAt: Date
 	}

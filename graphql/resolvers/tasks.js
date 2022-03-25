@@ -34,6 +34,7 @@ module.exports = {
 			}
 		},
 		async updatedTask(_, { taskInput, taskId }, context) {
+			console.log({ taskInput, taskId });
 			const isAuthorized = checkAuth(context);
 			if (isAuthorized) {
 				return task_controller.update_task(taskInput, taskId, isAuthorized._id);

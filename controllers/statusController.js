@@ -22,6 +22,7 @@ exports.create_status = async function (statusInput, taskId, userId) {
 			});
 
 			task.statuses = await [...task.statuses, status._id];
+			task.attentionFlag = await false;
 
 			return task
 				.save()

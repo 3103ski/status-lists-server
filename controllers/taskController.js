@@ -25,7 +25,7 @@ exports.create_task = async function (taskInput, projectId, userId) {
 			});
 
 			// add new task to its project
-			project.tasks = await [newTask._id, ...project.tasks];
+			project.tasks = await [...project.tasks, newTask._id];
 			return project
 				.save()
 				.then(async () => {
@@ -33,7 +33,11 @@ exports.create_task = async function (taskInput, projectId, userId) {
 					return newTask
 						.save()
 						.then(async (savedTask) => {
-							await status_controller.create_status({ text: 'Task Created' }, savedTask._id, userId);
+							await status_controller.create_status(
+								{ text: `Task '${newTask.title}' added to project '${project.title}'` },
+								savedTask._id,
+								userId
+							);
 
 							let populated_task = await _this.get_task(savedTask._id);
 
@@ -86,6 +90,7 @@ exports.get_all_tasks_by_user = async function (userId) {
 
 exports.update_task = async function (taskInput, taskId, userId) {
 	let task = await _this.get_task(taskId, false);
+	let project = await project_controller.get_project(task.project);
 	let user = await user_controller.get_user(userId);
 
 	if (user && task) {

@@ -44,6 +44,11 @@ const taskSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		archived: {
+			type: Boolean,
+			default: false,
+		},
+
 		attentionFlag: {
 			type: Boolean,
 			default: false,
