@@ -38,7 +38,7 @@ authRouter
 		/** --> DISPLAY NAME Validation */
 		const displayNameErrors = await validateDisplayName(displayName);
 		if (displayNameErrors) return jsonRESPONSE(displayNameErrors.status, res, displayNameErrors);
-		console.log('about to try and register the new user');
+
 		/** --> REGISTER New User */
 		return User.register(new User({ email }), password, async (err, user) => {
 			if (err) return jsonRESPONSE(500, res, { errors: err });
