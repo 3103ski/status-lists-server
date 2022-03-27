@@ -88,6 +88,6 @@ const userSchema = new Schema(
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 //••••• Do any populating here
-// userSchema.pre('find', Populate('projects')).pre('findOne', Populate('projects'));
+userSchema.pre('find', Populate('projects')).pre('findOne', Populate('projects'));
 
 module.exports = model('User', userSchema);
