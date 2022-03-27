@@ -42,14 +42,18 @@ exports.get_project = async function (projectId, populate = true) {
 
 exports.get_user_projects = async function (userId) {
 	let projects = await Project.find({ owner: userId });
-	console.log({ projectsResult: projects });
+
 	return projects;
 };
 
 exports.update_project = async function (projectInput, projectId, userId) {
 	let project = await _this.get_project(projectId, false);
-	if (project.owner._id === userId) {
+	console.log(`${project.owner} and ${userId}`);
+	if (`${project.owner}` === `${userId}`) {
+		console.log('they match');
 		return Project.findByIdAndUpdate(projectId, projectInput, { new: true }, function (errors, updatedProject) {
+			console.log({ updatedProject });
+			console.log({ errors });
 			if (errors) {
 				return {
 					msg: 'project_controller >> update_project >> error updating your project',
@@ -62,7 +66,6 @@ exports.update_project = async function (projectInput, projectId, userId) {
 	} else {
 		return {
 			msg: 'project_controller >> update_project >> you do not own this project',
-			errors,
 		};
 	}
 };
