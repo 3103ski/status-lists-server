@@ -18,7 +18,7 @@ module.exports = {
 		SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
 		SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
 	},
-	TOKEN_DURATION: 3600, // in seconds
+	TOKEN_DURATION: 86400, // in seconds
 };
 
 //••••••••••••••••
