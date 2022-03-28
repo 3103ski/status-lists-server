@@ -21,6 +21,7 @@ const projectTypeDefs = gql`
 		title: String
 		notes: String
 		project: ID
+		listExpanded: Boolean
 		statuses: [Status]
 		isComplete: Boolean
 		archived: Boolean

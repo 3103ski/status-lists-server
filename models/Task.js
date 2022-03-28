@@ -44,6 +44,10 @@ const taskSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		listExpanded: {
+			type: Boolean,
+			default: true,
+		},
 		archived: {
 			type: Boolean,
 			default: false,

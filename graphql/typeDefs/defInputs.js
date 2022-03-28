@@ -35,6 +35,7 @@ const inputsTypeDef = gql`
 		title: String
 		notes: String
 		isComplete: Boolean
+		listExpanded: Boolean
 		archived: Boolean
 		attentionFlag: Boolean
 	}
