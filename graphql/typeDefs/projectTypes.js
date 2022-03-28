@@ -1,6 +1,23 @@
 const { gql } = require('apollo-server-express');
 
 const projectTypeDefs = gql`
+	type ProjectFolder {
+		id: ID
+		folders: [Folder]
+		projects: [Project]
+		userId: ID
+		archived: [Project]
+	}
+
+	type Folder {
+		id: ID
+		userId: ID
+		folders: [Folder]
+		projects: [Project]
+		createdAt: Date
+		updatedAt: Date
+	}
+
 	type Project {
 		id: ID
 		owner: ID
@@ -11,6 +28,7 @@ const projectTypeDefs = gql`
 		bellCount: Int
 		tasks: [Task]
 		createdAt: Date
+		updatedAt: Date
 	}
 
 	type Task {
@@ -27,6 +45,7 @@ const projectTypeDefs = gql`
 		archived: Boolean
 		attentionFlag: Boolean
 		createdAt: Date
+		updatedAt: Date
 	}
 	type Like {
 		id: ID
@@ -43,6 +62,7 @@ const projectTypeDefs = gql`
 		task: ID
 		likes: [Like]
 		createdAt: Date
+		updatedAt: Date
 	}
 `;
 

@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-// const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const Populate = require('../util/autoPopulate');
 
@@ -60,6 +59,10 @@ const userSchema = new Schema(
 			],
 			default: [],
 		},
+		projectFolder: {
+			type: Schema.Types.ObjectId,
+			ref: 'ProjectFolder',
+		},
 		isPublic: {
 			type: Boolean,
 			default: true,
@@ -88,6 +91,10 @@ const userSchema = new Schema(
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 //••••• Do any populating here
-userSchema.pre('find', Populate('projects')).pre('findOne', Populate('projects'));
+userSchema
+	.pre('find', Populate('projects'))
+	.pre('findOne', Populate('projects'))
+	.pre('find', Populate('projectFolder'))
+	.pre('findOne', Populate('projectFolder'));
 
 module.exports = model('User', userSchema);

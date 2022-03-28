@@ -8,7 +8,7 @@ const auth = require('./authenticate.js');
 // const { cloudinary } = require('../util/cloudinary');
 // const https = require('https');
 
-const { User } = require('../models');
+const { User, ProjectFolder } = require('../models');
 const { jsonRESPONSE } = require('../util/responseHelpers.js');
 // const { randomNumberBetween } = require('../util/readableStringFunctions.js');
 const { validatePassword, validateNewEmail, validateDisplayName } = require('./authValidators.js');
@@ -47,6 +47,10 @@ authRouter
 			user.info.email = await email;
 			user.info.userId = await user._id;
 			// user.info.avatar = `generic/generic_${randomNumberBetween(1, 8)}.png`;
+
+			let projectFolder = await new ProjectFolder({ userId: user._id });
+
+			user.projectFolder = await projectFolder._id;
 
 			return user.save(async (err) => {
 				if (err)

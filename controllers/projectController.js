@@ -1,31 +1,41 @@
-const { Project } = require('../models');
+const { Project, ProjectFolder } = require('../models');
 
 const user_controller = require('./userController.js');
+const project_folder_controller = require('./projectFolderController.js');
+
 const _this = this;
 
 exports.create_project = async function (projectInput, userId) {
 	const { title, notes = '' } = projectInput;
-	let user = await user_controller.get_user(userId, false);
+
+	// let projectFolder = await ProjectFolder.findOne({ userId });
 	let newProject = await new Project({ title, notes, owner: userId, users: [userId] });
 
-	console.log(newProject);
+	// console.log(newProject);
 
-	user.projects = await [...user.projects, newProject._id];
-	return user
+	return newProject
 		.save()
-		.then((updatedUser) => {
-			return newProject
-				.save()
-				.then((project) => project)
-				.catch((error) => ({
-					error,
-					msg: 'projects_controller >> create_project >> error saving the new project',
-				}));
+		.then(async (project) => {
+			console.log({ anId: project._id });
+			let projectAdded = await project_folder_controller.add_newly_created_project(
+				userId,
+				project._id.toString()
+			);
+			// add to folder with controller HERE
+			console.log('check after');
+			if (projectAdded) {
+				console.log('projectAdded to folder correctly');
+				return projectAdded;
+			}
+			return project;
 		})
-		.catch((error) => ({
-			error,
-			msg: 'projects_controller >> create_project >> error saving the new project id to the user',
-		}));
+		.catch((error) => {
+			console.log({ error });
+			return {
+				error,
+				msg: 'projects_controller >> create_project >> error saving the new project',
+			};
+		});
 };
 
 exports.get_project = async function (projectId, populate = true) {
