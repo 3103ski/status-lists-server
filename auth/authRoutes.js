@@ -50,25 +50,37 @@ authRouter
 
 			let projectFolder = await new ProjectFolder({ userId: user._id });
 
-			user.projectFolder = await projectFolder._id;
+			return projectFolder
+				.save()
+				.then(async () => {
+					user.projectFolder = await projectFolder._id;
 
-			return user.save(async (err) => {
-				if (err)
-					return jsonRESPONSE(500, res, {
-						errors: { server: 'There was a server error' },
+					return user.save(async (err) => {
+						if (err)
+							return jsonRESPONSE(500, res, {
+								errors: { server: 'There was a server error' },
+							});
+						let populated_user = await User.findOne({ _id: user.id });
+						if (populated_user) {
+							return passport.authenticate('local')(req, res, () =>
+								jsonRESPONSE(200, res, {
+									token: auth.getToken({ _id: populated_user._id }),
+									success: true,
+									status: 'Registration Successful',
+									user: populated_user,
+								})
+							);
+						}
 					});
-				let populated_user = await User.findOne({ _id: user.id });
-				if (populated_user) {
-					return passport.authenticate('local')(req, res, () =>
-						jsonRESPONSE(200, res, {
-							token: auth.getToken({ _id: populated_user._id }),
-							success: true,
-							status: 'Registration Successful',
-							user: populated_user,
-						})
-					);
-				}
-			});
+				})
+				.catch((error) =>
+					jsonRESPONSE(400, res, {
+						errors: {
+							serverError:
+								'The server threw an error while trying to create the new users project folder',
+						},
+					})
+				);
 		});
 	});
 
