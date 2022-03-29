@@ -64,6 +64,18 @@ const projectTypeDefs = gql`
 		createdAt: Date
 		updatedAt: Date
 	}
+
+	type SwapTaskPosReturn {
+		projectId: ID
+		oldIndex: Int
+		newIndex: Int
+	}
+
+	input SwapTaskPosInput {
+		projectId: ID
+		oldIndex: Int
+		newIndex: Int
+	}
 `;
 
 module.exports = projectTypeDefs;

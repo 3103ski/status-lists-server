@@ -18,6 +18,8 @@ const mutationTypeDefs = gql`
 		newTask(taskInput: TaskInput, projectId: ID): Task
 		updatedTask(taskInput: TaskInput, taskId: ID): Task
 
+		swapTaskPos(swapTaskInput: SwapTaskPosInput): SwapTaskPosReturn
+
 		#  Statuses
 		newStatus(statusInput: StatusInput, taskId: ID): Status
 		likeStatus(statusId: ID): Status

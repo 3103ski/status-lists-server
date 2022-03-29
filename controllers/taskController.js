@@ -73,6 +73,29 @@ exports.get_task = async function (taskId, populate = true) {
 	return task;
 };
 
+exports.swap_task_position_in_project = async function (projectId, oldIndex, newIndex) {
+	let project = await project_controller.get_project(projectId);
+	let taskList = await project.tasks.map((t) => t._id);
+	let task = await taskList.splice(oldIndex, 1)[0];
+	taskList.splice(newIndex, 0, task);
+
+	project.tasks = await taskList;
+
+	return project
+		.save()
+		.then((savedProject) => {
+			console.log({ savedProject });
+			return { projectId, oldIndex, newIndex };
+		})
+		.catch((error) => {
+			console.log({ error });
+			return {
+				error,
+				msg: 'task_controller >>> swap_task_position_in_project >>> error saving the new order of the lsit in the project',
+			};
+		});
+};
+
 exports.get_project_tasks = async function (projectId) {
 	let tasks = await Task.find({ project: projectId });
 	return tasks;

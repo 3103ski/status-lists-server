@@ -40,5 +40,12 @@ module.exports = {
 				return task_controller.update_task(taskInput, taskId, isAuthorized._id);
 			}
 		},
+		async swapTaskPos(_, { swapTaskInput }, context) {
+			const isAuthorized = checkAuth(context);
+			if (isAuthorized) {
+				const { projectId, oldIndex, newIndex } = swapTaskInput;
+				return task_controller.swap_task_position_in_project(projectId, oldIndex, newIndex);
+			}
+		},
 	},
 };
