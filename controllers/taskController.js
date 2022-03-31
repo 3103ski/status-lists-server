@@ -118,14 +118,16 @@ exports.update_task = async function (taskInput, taskId, userId) {
 
 	if (user && task) {
 		if (task.createdBy === userId || task.projectOwner === userId || project.users.includes(userId)) {
-			return Task.findByIdAndUpdate(taskId, taskInput, { new: true }, function (errors, updatedTask) {
+			return Task.findByIdAndUpdate(taskId, taskInput, { new: true }, async function (errors, updatedTask) {
 				if (errors) {
 					return {
 						msg: 'task_controller >> update_task >> error updating your task',
 						errors,
 					};
 				} else {
-					return updatedTask;
+					let returnTask = await _this.get_task(updatedTask._id);
+					// console.log({ returnTask });
+					return returnTask;
 				}
 			});
 		} else {

@@ -1,8 +1,8 @@
-const { User } = require('../models');
+const { User, Label, Task } = require('../models');
 const { validate_user } = require('./validators');
 
 const auth = require('../auth/authenticate');
-
+const task_controller = require('./taskController');
 const { cloudinary } = require('../util/cloudinary');
 const { randomNumberBetween } = require('../util/readableStringFunctions');
 const checkAuth = require('../util/checkAuth');
@@ -82,6 +82,102 @@ exports.update_user_info = async function (updateUserInfoInput, userId) {
 			msg: 'userController >> update_user_info >> error while saving updates to db object',
 			errors,
 		}));
+};
+
+//•••••••••••••••••••••••••••••
+// -- User Task Labels
+//•••••••••••••••••••••••••••••
+exports.create_label = async function (label, color = 'transparent', userId) {
+	let user = await _this.get_user(userId);
+	if (label && user) {
+		let newLabel = await new Label({ label, color, userId });
+		return newLabel
+			.save()
+			.then(async (savedLabel) => {
+				let labels = await user.labels.map((l) => l._id);
+				await labels.push(savedLabel._id);
+
+				user.labels = await [...labels];
+
+				return user
+					.save()
+					.then(() => {
+						return savedLabel;
+					})
+					.catch((errors) => ({
+						msg: 'userController >> create_label >> error saving the user with the new label',
+						errors,
+					}));
+			})
+			.catch((errors) => ({
+				msg: 'userController >> create_label >> error starting controller method. user or label text missing',
+				errors,
+			}));
+	} else {
+		return {
+			msg: 'userController >> create_label >> error starting controller method. user or label text missing',
+		};
+	}
+};
+
+exports.get_label = async function (labelId) {
+	let label = await Label.findOne({ _id: labelId });
+	return label;
+};
+
+exports.update_label = async function (labelInput, labelId) {
+	return Label.findByIdAndUpdate(labelId, { ...labelInput }, { new: true }, async function (errors, updatedLabel) {
+		if (errors) {
+			return {
+				msg: 'user_controller >> update_label >> error updating the label',
+				errors,
+			};
+		} else {
+			console.log({ updatedLabel });
+			return updatedLabel;
+		}
+	});
+};
+
+exports.delete_label = async function (labelId, userId) {
+	let label = await _this.get_label(labelId);
+	let user = await _this.get_user(userId, false);
+	if (label && user) {
+		let tasksWithLabel = await Task.find({ label: labelId });
+		if (tasksWithLabel.length > 0) {
+			for (let i = 0; i < tasksWithLabel.length - 1; i++) {
+				let task = await task_controller.get_task(tasksWithLabel[i]);
+				if (task) {
+					task.label = await null;
+					await task.save().catch((errors) => ({
+						msg: `userController >> delete_label >> error removing the label id from ${
+							task.title
+						} (${task._id.toString()})`,
+						errors,
+					}));
+				} else {
+					console.log('I tried but didnt find the task');
+				}
+			}
+		}
+
+		userLabels = await user.labels.filter((l) => l !== labelId);
+		user.labels = await [...userLabels];
+
+		return Label.deleteOne({ _id: labelId })
+			.then(() => {
+				return user
+					.save()
+					.then(() => label)
+					.catch((errors) => ({
+						errors,
+						msg: 'user_controller >>> delete_label >>> error saving the update to the user',
+					}));
+			})
+			.catch((errors) => ({ errors, msg: 'user_controller >>> delete_label >>> error deleting the label' }));
+	} else {
+		return null;
+	}
 };
 
 //•••••••••••••••••••••••••••••

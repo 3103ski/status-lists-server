@@ -39,5 +39,24 @@ module.exports = {
 				return user_controller.update_user_info(updateUserInfoInput, isAuthorized._id);
 			}
 		},
+		async label(_, { label, color }, context) {
+			const isAuthorized = await checkAuth(context);
+			if (isAuthorized) {
+				return user_controller.create_label(label, color, isAuthorized._id);
+			}
+		},
+		async updatedLabel(_, { updateLabelInput }, context) {
+			const isAuthorized = await checkAuth(context);
+			if (isAuthorized) {
+				const { label, color, labelId } = updateLabelInput;
+				return user_controller.update_label({ label, color }, labelId);
+			}
+		},
+		async deletedLabel(_, { labelId }, context) {
+			const isAuthorized = await checkAuth(context);
+			if (isAuthorized) {
+				return user_controller.delete_label(labelId, isAuthorized._id);
+			}
+		},
 	},
 };

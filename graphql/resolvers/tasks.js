@@ -37,7 +37,8 @@ module.exports = {
 			console.log({ taskInput, taskId });
 			const isAuthorized = checkAuth(context);
 			if (isAuthorized) {
-				return task_controller.update_task(taskInput, taskId, isAuthorized._id);
+				let returnTask = await task_controller.update_task(taskInput, taskId, isAuthorized._id);
+				return task_controller.get_task(returnTask._id);
 			}
 		},
 		async swapTaskPos(_, { swapTaskInput }, context) {

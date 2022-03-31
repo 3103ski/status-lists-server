@@ -22,6 +22,12 @@ const inputsTypeDef = gql`
 		profileBanner: String
 	}
 
+	input UpdateLabelInput {
+		labelId: ID
+		label: String
+		color: String
+	}
+
 	# /** •••••••••••••• */
 	# /** PROJECT INPUTS */
 	# /** •••••••••••••• */
@@ -36,6 +42,7 @@ const inputsTypeDef = gql`
 		notes: String
 		isComplete: Boolean
 		listExpanded: Boolean
+		label: ID
 		archived: Boolean
 		attentionFlag: Boolean
 	}

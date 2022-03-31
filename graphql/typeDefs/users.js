@@ -11,11 +11,19 @@ const userTypeDef = gql`
 		info: UserInfo
 		isPublic: Boolean
 		googleId: String
+		labels: [Label]
 		projectFolder: ProjectFolder
 		projects: [Project]
 		email: String!
 		token: String!
 		createdAt: String!
+	}
+
+	type Label {
+		id: ID
+		userId: ID
+		label: String
+		color: String
 	}
 
 	type UserInfo {

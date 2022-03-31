@@ -39,6 +39,7 @@ const projectTypeDefs = gql`
 		title: String
 		notes: String
 		project: ID
+		label: Label
 		listExpanded: Boolean
 		statuses: [Status]
 		isComplete: Boolean

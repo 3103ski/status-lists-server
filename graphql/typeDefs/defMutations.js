@@ -10,6 +10,11 @@ const mutationTypeDefs = gql`
 		refreshToken(token: String): RefreshToken
 		deletePicture(image: String): User
 
+		# Labels
+		label(label: String, color: String, addToTaskId: ID): Label
+		updatedLabel(updateLabelInput: UpdateLabelInput): Label
+		deletedLabel(labelId: ID): Label
+
 		# Projects
 		newProject(projectInput: ProjectInput): Project
 		updatedProject(projectInput: ProjectInput, projectId: ID): Project

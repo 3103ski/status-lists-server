@@ -59,6 +59,15 @@ const userSchema = new Schema(
 			],
 			default: [],
 		},
+		labels: {
+			type: [
+				{
+					type: Schema.Types.ObjectId,
+					ref: 'Label',
+				},
+			],
+			default: [],
+		},
 		projectFolder: {
 			type: Schema.Types.ObjectId,
 			ref: 'ProjectFolder',
@@ -94,6 +103,8 @@ userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 userSchema
 	.pre('find', Populate('projects'))
 	.pre('findOne', Populate('projects'))
+	.pre('find', Populate('labels'))
+	.pre('findOne', Populate('labels'))
 	.pre('find', Populate('projectFolder'))
 	.pre('findOne', Populate('projectFolder'));
 

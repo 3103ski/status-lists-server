@@ -31,6 +31,10 @@ const taskSchema = new Schema(
 		project: {
 			type: Schema.Types.ObjectId,
 		},
+		label: {
+			type: Schema.Types.ObjectId,
+			ref: 'Label',
+		},
 		statuses: {
 			type: [
 				{
@@ -61,6 +65,10 @@ const taskSchema = new Schema(
 	{ timestamps: true }
 );
 
-taskSchema.pre('find', Populate('statuses')).pre('findOne', Populate('statuses'));
+taskSchema
+	.pre('find', Populate('statuses'))
+	.pre('findOne', Populate('statuses'))
+	.pre('find', Populate('label'))
+	.pre('findOne', Populate('label'));
 
 module.exports = model('Task', taskSchema);
