@@ -1,4 +1,4 @@
-const { project_controller } = require('../../controllers/');
+const { project_controller, project_folder_controller } = require('../../controllers/');
 const checkAuth = require('../../util/checkAuth');
 
 module.exports = {
@@ -26,6 +26,22 @@ module.exports = {
 			const isAuthorized = checkAuth(context);
 			if (isAuthorized) {
 				return project_controller.update_project(projectInput, projectId, isAuthorized._id);
+			}
+		},
+		async swapProjectPosition(_, { swapProjectInput }, context) {
+			const isAuthorized = checkAuth(context);
+			if (isAuthorized) {
+				const { projectId, oldIndex, newIndex, projectFolderId } = swapProjectInput;
+				console.log({ swapProjectInput });
+				if (swapProjectInput) {
+					return project_folder_controller.swap_project_position(
+						isAuthorized._id,
+						projectId,
+						projectFolderId,
+						oldIndex,
+						newIndex
+					);
+				}
 			}
 		},
 	},

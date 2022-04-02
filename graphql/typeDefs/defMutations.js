@@ -19,6 +19,8 @@ const mutationTypeDefs = gql`
 		newProject(projectInput: ProjectInput): Project
 		updatedProject(projectInput: ProjectInput, projectId: ID): Project
 
+		swapProjectPosition(swapProjectInput: swapProjectInput): swapProjectReturn
+
 		#  Tasks
 		newTask(taskInput: TaskInput, projectId: ID): Task
 		updatedTask(taskInput: TaskInput, taskId: ID): Task

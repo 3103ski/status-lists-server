@@ -77,6 +77,24 @@ const projectTypeDefs = gql`
 		oldIndex: Int
 		newIndex: Int
 	}
+
+	type swapProjectReturn {
+		userId: ID
+		projectId: ID
+		oldIndex: Int
+		newIndex: Int
+		oldFolder: Int
+		newFolder: Int
+	}
+
+	input swapProjectInput {
+		projectId: ID
+		projectFolderId: ID
+		oldIndex: Int
+		newIndex: Int
+		oldFolder: Int
+		newFolder: Int
+	}
 `;
 
 module.exports = projectTypeDefs;
