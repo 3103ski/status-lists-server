@@ -16,6 +16,7 @@ const userTypeDef = gql`
 		projects: [Project]
 		email: String!
 		token: String!
+		preferences: Preferences
 		createdAt: String!
 	}
 
@@ -37,6 +38,19 @@ const userTypeDef = gql`
 		bio: String
 		pictures: [String]
 		profileBanner: String
+	}
+
+	type Preferences {
+		id: ID
+		userId: ID
+		showDaysSinceTaskUpdate: Boolean
+		autoBell: Boolean
+		daysUntilAutoBell: Int
+		bellUpgradeToClock: Boolean
+		daysUntilBellUpgrade: Int
+		removeBellOnNewStatus: Boolean
+		showLabelColorsInNav: Boolean
+		showLabelsInTaskLinks: Boolean
 	}
 `;
 

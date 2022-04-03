@@ -28,6 +28,17 @@ const inputsTypeDef = gql`
 		color: String
 	}
 
+	input userPreferencesInput {
+		showDaysSinceTaskUpdate: Boolean
+		autoBell: Boolean
+		daysUntilAutoBell: Int
+		bellUpgradeToClock: Boolean
+		daysUntilBellUpgrade: Int
+		removeBellOnNewStatus: Boolean
+		showLabelColorsInNav: Boolean
+		showLabelsInTaskLinks: Boolean
+	}
+
 	# /** •••••••••••••• */
 	# /** PROJECT INPUTS */
 	# /** •••••••••••••• */

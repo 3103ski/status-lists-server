@@ -1,6 +1,7 @@
 const Folder = require('./Folder');
 const Label = require('./Label');
 const Like = require('./Like.js');
+const Preferences = require('./Preferences');
 const Project = require('./Project.js');
 const ProjectFolder = require('./ProjectFolder');
 const Status = require('./Status.js');
@@ -11,6 +12,7 @@ module.exports = {
 	Folder,
 	Label,
 	Like,
+	Preferences,
 	Project,
 	ProjectFolder,
 	Status,

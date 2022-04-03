@@ -6,6 +6,8 @@ const mutationTypeDefs = gql`
 		updateUser(updateUserInput: UpdateUserInput): User
 		updateUserInfo(updateUserInfoInput: UpdateUserInfoInput): User
 
+		updateUserPreferences(userPreferencesInput: userPreferencesInput): Preferences
+
 		uploadAvatar(avatar: String): User
 		refreshToken(token: String): RefreshToken
 		deletePicture(image: String): User

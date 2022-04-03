@@ -1,4 +1,4 @@
-const { user_controller } = require('../../controllers/');
+const { user_controller, user_preferences_controller } = require('../../controllers/');
 const checkAuth = require('../../util/checkAuth');
 
 module.exports = {
@@ -37,6 +37,14 @@ module.exports = {
 			const isAuthorized = await checkAuth(context);
 			if (isAuthorized) {
 				return user_controller.update_user_info(updateUserInfoInput, isAuthorized._id);
+			}
+		},
+		async updateUserPreferences(_, { userPreferencesInput }, context) {
+			const isAuthorized = await checkAuth(context);
+			if (isAuthorized) {
+				console.log('check 1');
+				console.log({ userPreferencesInput });
+				return user_preferences_controller.update_preferences(userPreferencesInput, isAuthorized._id);
 			}
 		},
 		async label(_, { label, color }, context) {

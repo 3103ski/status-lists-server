@@ -50,6 +50,10 @@ const userSchema = new Schema(
 				default: '',
 			},
 		},
+		preferences: {
+			type: Schema.Types.ObjectId,
+			ref: 'Preferences',
+		},
 		projects: {
 			type: [
 				{
@@ -105,6 +109,8 @@ userSchema
 	.pre('findOne', Populate('projects'))
 	.pre('find', Populate('labels'))
 	.pre('findOne', Populate('labels'))
+	.pre('find', Populate('preferences'))
+	.pre('findOne', Populate('preferences'))
 	.pre('find', Populate('projectFolder'))
 	.pre('findOne', Populate('projectFolder'));
 
