@@ -8,7 +8,7 @@ const auth = require('./authenticate.js');
 // const { cloudinary } = require('../util/cloudinary');
 // const https = require('https');
 
-const { User, ProjectFolder } = require('../models');
+const { User, ProjectFolder, Preferences } = require('../models');
 const { jsonRESPONSE } = require('../util/responseHelpers.js');
 // const { randomNumberBetween } = require('../util/readableStringFunctions.js');
 const { validatePassword, validateNewEmail, validateDisplayName } = require('./authValidators.js');
@@ -53,24 +53,29 @@ authRouter
 			return projectFolder
 				.save()
 				.then(async () => {
-					user.projectFolder = await projectFolder._id;
+					let newDefaultPreferences = new Preferences({ userId: user._id });
 
-					return user.save(async (err) => {
-						if (err)
-							return jsonRESPONSE(500, res, {
-								errors: { server: 'There was a server error' },
-							});
-						let populated_user = await User.findOne({ _id: user.id });
-						if (populated_user) {
-							return passport.authenticate('local')(req, res, () =>
-								jsonRESPONSE(200, res, {
-									token: auth.getToken({ _id: populated_user._id }),
-									success: true,
-									status: 'Registration Successful',
-									user: populated_user,
-								})
-							);
-						}
+					newDefaultPreferences.save().then((savedPreferences) => {
+						user.preferences = savedPreferences._id;
+						user.projectFolder = projectFolder._id;
+
+						return user.save(async (err) => {
+							if (err)
+								return jsonRESPONSE(500, res, {
+									errors: { server: 'There was a server error' },
+								});
+							let populated_user = await User.findOne({ _id: user.id });
+							if (populated_user) {
+								return passport.authenticate('local')(req, res, () =>
+									jsonRESPONSE(200, res, {
+										token: auth.getToken({ _id: populated_user._id }),
+										success: true,
+										status: 'Registration Successful',
+										user: populated_user,
+									})
+								);
+							}
+						});
 					});
 				})
 				.catch((error) =>

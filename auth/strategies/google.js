@@ -67,6 +67,8 @@ const { cloudinary } = require('../../util/cloudinary');
 // 	}
 // }
 
+// generateMissingPreferenceModels();
+
 module.exports.googleStrategy = passport.use(
 	new GoogleTokenStrategy(
 		{
@@ -101,55 +103,69 @@ module.exports.googleStrategy = passport.use(
 				return projectFolder.save().then(async (savedProjectFolder) => {
 					user.projectFolder = await savedProjectFolder._id;
 
-					return user.save(async (error) => {
-						if (error) return done(error, null);
-						const avatarUrl = profile._json.picture;
+					let newDefaultPreferences = new Preferences({ userId: user._id });
 
-						return https
-							.get(avatarUrl, (resp) => {
-								resp.setEncoding('base64');
+					return newDefaultPreferences
+						.save()
+						.then((savedPreferences) => {
+							user.preferences = savedPreferences._id;
 
-								body = 'data:' + resp.headers['content-type'] + ';base64,';
+							return user.save(async (error) => {
+								if (error) return done(error, null);
+								const avatarUrl = profile._json.picture;
 
-								resp.on('data', (data) => {
-									body += data;
-								});
+								return https
+									.get(avatarUrl, (resp) => {
+										resp.setEncoding('base64');
 
-								resp.on('error', (error) => {
-									done(error, null);
-								});
+										body = 'data:' + resp.headers['content-type'] + ';base64,';
 
-								return resp.on('end', async () => {
-									let userWithAvatar = await User.findOne({
-										_id: user._id,
-									});
-
-									if (body && userWithAvatar) {
-										const uploadRes = await cloudinary.uploader.upload(body, {
-											upload_preset: 'status_list_maker',
-											folder: 'avatars',
+										resp.on('data', (data) => {
+											body += data;
 										});
 
-										if (uploadRes) {
-											userWithAvatar.info.avatar = uploadRes.public_id;
-											userWithAvatar.info.pictures = [uploadRes.public_id];
+										resp.on('error', (error) => {
+											done(error, null);
+										});
 
-											return userWithAvatar
-												.save()
-												.then((userWithAvatar) => done(null, userWithAvatar))
-												.catch((errors) => done(errors, null));
-										} else {
-											console.log('the avatar did NOT come through correctly. Tinker away.');
-										}
-									} else {
-										console.log('the avatar did NOT come through correctly. Tinker away.');
-									}
-								});
-							})
-							.on('error', (e) => {
-								return done(e, null);
+										return resp.on('end', async () => {
+											let userWithAvatar = await User.findOne({
+												_id: user._id,
+											});
+
+											if (body && userWithAvatar) {
+												const uploadRes = await cloudinary.uploader.upload(body, {
+													upload_preset: 'status_list_maker',
+													folder: 'avatars',
+												});
+
+												if (uploadRes) {
+													userWithAvatar.info.avatar = uploadRes.public_id;
+													userWithAvatar.info.pictures = [uploadRes.public_id];
+
+													return userWithAvatar
+														.save()
+														.then((userWithAvatar) => done(null, userWithAvatar))
+														.catch((errors) => done(errors, null));
+												} else {
+													console.log(
+														'the avatar did NOT come through correctly. Tinker away.'
+													);
+												}
+											} else {
+												console.log('the avatar did NOT come through correctly. Tinker away.');
+											}
+										});
+									})
+									.on('error', (e) => {
+										return done(e, null);
+									});
 							});
-					});
+						})
+						.catch((err) => {
+							console.log('there was an error saving the new default preferences');
+							console.log(err);
+						});
 				});
 			});
 		}
