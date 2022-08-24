@@ -93,6 +93,8 @@ authRouter
 	.route('/google/token')
 	.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
 	.get(cors.corsWithOptions, passport.authenticate('google-token'), (req, res) => {
+		console.log('The googla auth was successfull and responding to the client ');
+		console.log(req.user._id);
 		return jsonRESPONSE(200, res, {
 			success: true,
 			token: auth.getToken({ _id: req.user._id }),

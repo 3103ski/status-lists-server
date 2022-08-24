@@ -79,8 +79,11 @@ module.exports.googleStrategy = passport.use(
 			const email = profile.emails[0].value;
 
 			return User.findOne({ googleId: profile.id }, async (err, existingUser) => {
+				console.log({ errorLoggingIn: err });
 				if (err) return done(err, false);
 				// migrateProjects();
+
+				console.log({ foundThisGoogleUser: existingUser });
 				if (!err && existingUser) return done(null, existingUser);
 
 				const emailErr = await validateNewEmail(email);
@@ -91,6 +94,9 @@ module.exports.googleStrategy = passport.use(
 					email,
 					googleId: profile.id,
 				});
+
+				console.log('tried making a new user');
+				console.log({ user });
 
 				user.info.displayName = await `${profile.emails[0].value.split('@')[0]}${profile.name.givenName}`;
 				user.info.firstName = await profile.name.givenName;
