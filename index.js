@@ -122,7 +122,8 @@ async function startApolloServer() {
 	app.use(function (err, req, res, next) {
 		res.locals.message = err.message;
 		res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+		console.log('we are here');
+		console.log({ err });
 		return jsonRESPONSE(500, res, err);
 	});
 

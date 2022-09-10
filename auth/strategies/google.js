@@ -84,6 +84,9 @@ module.exports.googleStrategy = passport.use(
 				// migrateProjects();
 
 				console.log({ foundThisGoogleUser: existingUser });
+				if (existingUser && existingUser.projectFolder.projects[0]) {
+					console.log(existingUser.projectFolder.projects[0]);
+				}
 				if (!err && existingUser) return done(null, existingUser);
 
 				const emailErr = await validateNewEmail(email);
